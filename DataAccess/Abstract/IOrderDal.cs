@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DataAccess.Abstract
 {
-    public interface IOrderrDal : IEntityRepository<Order>
+    public interface IOrderDal : IEntityRepository<Order>
     {
         List<OrderDto> GetOrderDetails();
     }

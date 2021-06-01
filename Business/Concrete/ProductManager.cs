@@ -31,6 +31,11 @@ namespace Business.Concrete
 
         public IResult Delete(Product product)
         {
+            IResult result = BusinessRules.Run(DeletebleNonExistingOrder());
+            if (result != null)
+            {
+                return result;
+            }
             _productDal.Delete(product);
             return new SuccessResult(Messages.Deleted);
         }
@@ -47,6 +52,11 @@ namespace Business.Concrete
 
         public IResult Update(Product product)
         {
+            IResult result = BusinessRules.Run(UpdatebleNonExistingProduct());
+            if (result != null)
+            {
+                return result;
+            }
             _productDal.Update(product);
             return new SuccessResult(Messages.Updated);
         }
@@ -68,6 +78,24 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.ProductCountOfCategoryError);
             }
             return new SuccessResult();
-        }        
+        }
+        private IResult UpdatebleNonExistingProduct()
+        {
+            var result = _productDal.GetAll();
+            if (result.Count == 0)
+            {
+                return new ErrorResult(Messages.UpdatebleNonExistingProduct);
+            }
+            return new SuccessResult();
+        }
+        private IResult DeletebleNonExistingOrder()
+        {
+            var result = _productDal.GetAll();
+            if (result.Count == 0)
+            {
+                return new ErrorResult(Messages.DeletebleNonExistingProduct);
+            }
+            return new SuccessResult();
+        }
     }
 }
