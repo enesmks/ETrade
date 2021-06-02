@@ -11,7 +11,6 @@ namespace Business.ValidationRules.FluentValidation
         {
             RuleFor(x => x.ShipCity).NotEmpty().WithMessage(Messages.ShipCityCanNotBeEmpty);
             RuleFor(x => x.ShipCountry).NotEmpty().WithMessage(Messages.ShipCountryCanNotBeEmpty);
-            RuleFor(x => x.ShipAddress).NotEmpty().WithMessage(Messages.ShipAddressNotBeEmpty);
             RuleFor(x => x.OrderDate).NotEmpty().WithMessage(Messages.OrderDateCanNotBeEmpty);
             RuleFor(x => x.ShipAddress).NotEmpty().WithMessage(Messages.ShipAddressCanNotBeEmpty);
             RuleFor(x => x.Phone).NotEmpty().WithMessage(Messages.PhoneCanNotBeEmpty);

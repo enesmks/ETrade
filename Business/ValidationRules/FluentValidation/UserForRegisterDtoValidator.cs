@@ -8,7 +8,8 @@ using System.Text;
 namespace Business.ValidationRules.FluentValidation
 {
     public class UserForRegisterDtoValidator : AbstractValidator<UserForRegisterDto>
-    {
+    {        
+
         public UserForRegisterDtoValidator()
         {
             RuleFor(x => x.FirstName).NotEmpty().WithMessage(Messages.FirstNameCanNotBeEmpty);
@@ -27,6 +28,12 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(x => x.Password).MaximumLength(50).WithMessage(Messages.ErrorOfPasswordlLength);
             RuleFor(x => x.Password).MinimumLength(6).WithMessage(Messages.ErrorOfPasswordlLength);
+
+            RuleFor(x => x.Password).Matches(@"[A-Z]+").WithMessage(Messages.PasswordMustContainUppercase);
+            RuleFor(x => x.Password).Matches(@"[a-z]+").WithMessage(Messages.PasswordMustContainLowercase);
+            RuleFor(x => x.Password).Matches(@"[0-9]+").WithMessage(Messages.PasswordMustContainNumber);
+
+            RuleFor(x => x.Email).EmailAddress().WithMessage(Messages.NeedValidEmailAddress);
         }
     }
 }

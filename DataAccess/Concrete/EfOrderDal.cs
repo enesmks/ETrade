@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace DataAccess.Concrete
 {
-    public class EfOrderDal : EfEntityRepositoryBase<Order, ETradeContext>, IOrderrDal
+    public class EfOrderDal : EfEntityRepositoryBase<Order, ETradeContext>, IOrderDal
     {
         public List<OrderDto> GetOrderDetails()
         {

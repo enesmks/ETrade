@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Business.Concrete
 {
-    public class UserManger : IUserService
+    public class UserManager : IUserService
     {
         IUserDal _userDal;
 
-        public UserManger(IUserDal userDal)
+        public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
         }
