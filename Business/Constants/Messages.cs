@@ -65,11 +65,12 @@ namespace Business.Constants
         public static string PasswordMustContainLowercase = "Şifre küçük harf içermelidir";
         public static string PasswordMustContainNumber = "Şifre rakam içermelidir";
         public static string NeedValidEmailAddress="Geçerli bir eposta adresi giriniz";
-        internal static string CardNumberCanNotBeEmpty;
-        internal static string CvvCanNotBeEmpty;
-        internal static string ExpMonthCanNotBeEmpty;
-        internal static string ExpYearCanNotBeEmpty;
-        internal static string ErrorOfCardNumberLength;
-        internal static string ErrorOfCvvLength;
+        public static string CardNumberCanNotBeEmpty="kart numarası boş bırakılamaz";
+        public static string CvvCanNotBeEmpty="CVV boş bırakılamaz";
+        public static string ExpMonthCanNotBeEmpty="Sona erme ayı boş bırakılamaz";
+        public static string ExpYearCanNotBeEmpty= "Sona erme yılı boş bırakılamaz";
+        public static string ErrorOfCardNumberLength="Hatalı kart numarası !!!";
+        public static string ErrorOfCvvLength="Hatalı CVV !!!";
+        public static string ImageLimitExceeded="5 den fazla fotoğraf eklyemezsiniz";
     }
 }

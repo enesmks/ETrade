@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -25,6 +27,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(OrderValidator))]
         [SecuredOperation("admin,customer")]
+        [CacheRemoveAspect("IOrderService.Get")]
         public IResult Add(Order order)
         {
             IResult result = BusinessRules.Run(MaxOrderLimit(order.OrderId));
@@ -52,7 +55,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Order>>(_orderDal.GetAll());
         }
-
+        [CacheAspect]
         public IDataResult<Order> GetById(int id)
         {
             return new SuccessDataResult<Order>(_orderDal.Get(x => x.OrderId == id));
@@ -94,6 +97,14 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.DeletebleNonExistingOrder);
             }
+            return new SuccessResult();
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactinalOperation(Order order)
+        {
+            _orderDal.Add(order);
+            _orderDal.Update(order);
             return new SuccessResult();
         }
     }

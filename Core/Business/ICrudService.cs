@@ -14,5 +14,6 @@ namespace Core.Business
         IResult Add(T entity);
         IResult Delete(T entity);
         IResult Update(T entity);
+        IResult TransactinalOperation(T entity);
     }
 }

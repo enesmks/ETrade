@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -22,6 +24,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(ProductValidator))]
         [SecuredOperation("admin,customer")]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(CheckNumberOfProduct(product.ProductId),CheckIfProductCountOfCategoryCorrect(product.CategoryId));
@@ -51,6 +54,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll());
         }
 
+        [CacheAspect]
         public IDataResult<Product> GetById(int id)
         {
             return new SuccessDataResult<Product>(_productDal.Get(x => x.ProductId == id));
@@ -102,6 +106,14 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.DeletebleNonExistingProduct);
             }
+            return new SuccessResult();
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactinalOperation(Product product)
+        {
+            _productDal.Add(product);
+            _productDal.Update(product);
             return new SuccessResult();
         }
     }

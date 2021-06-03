@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,6 +23,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(SupplierValidator))]
         [SecuredOperation("admin,customer")]
+        [CacheRemoveAspect("ISupplierService.Get")]
         public IResult Add(Supplier supplier)
         {
             _supplierDal.Add(supplier);
@@ -39,9 +42,18 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Supplier>>(_supplierDal.GetAll());
         }
 
+        [CacheAspect]
         public IDataResult<Supplier> GetById(int id)
         {
             return new SuccessDataResult<Supplier>(_supplierDal.Get(x => x.SupplierId == id));
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactinalOperation(Supplier supplier)
+        {
+            _supplierDal.Add(supplier);
+            _supplierDal.Update(supplier);
+            return new SuccessResult();
         }
 
         [SecuredOperation("admin,customer")]

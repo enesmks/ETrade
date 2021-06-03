@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,6 +23,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(CustomerValidator))]
         [SecuredOperation("admin,customer")]
+        [CacheRemoveAspect("ICustomerService.Get")]
         public IResult Add(Customer customer)
         {
             _customerDal.Add(customer);
@@ -39,9 +42,18 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
+        [CacheAspect]
         public IDataResult<Customer> GetById(int id)
         {
             return new SuccessDataResult<Customer>(_customerDal.Get(x => x.CustomerId == id));
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactinalOperation(Customer customer)
+        {
+            _customerDal.Add(customer);
+            _customerDal.Update(customer);
+            return new SuccessResult();
         }
 
         [SecuredOperation("admin,customer")]

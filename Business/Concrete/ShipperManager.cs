@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,6 +23,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(ShipperValidator))]
         [SecuredOperation("admin,customer")]
+        [CacheRemoveAspect("IShipperService.Get")]
         public IResult Add(Shipper shipper)
         {
             _shipperDal.Add(shipper);
@@ -39,10 +42,20 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Shipper>>(_shipperDal.GetAll());
         }
 
+        [CacheAspect]
         public IDataResult<Shipper> GetById(int id)
         {
             return new SuccessDataResult<Shipper>(_shipperDal.Get(x => x.ShipperId == id));
         }
+
+        [TransactionScopeAspect]
+        public IResult TransactinalOperation(Shipper shipper)
+        {
+            _shipperDal.Add(shipper);
+            _shipperDal.Update(shipper);
+            return new SuccessResult();
+        }
+
         [SecuredOperation("admin,customer")]
         public IResult Update(Shipper shipper)
         {

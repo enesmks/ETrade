@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -23,6 +25,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(CreditCardValidator))]
         [SecuredOperation("admin,customer")]
+        [CacheRemoveAspect("ICreditCardService.Get")]
         public IResult Add(CreditCard creditCard)
         {
             _creditCardDal.Add(creditCard);
@@ -41,9 +44,18 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CreditCard>>(_creditCardDal.GetAll());
         }
 
+        [CacheAspect]
         public IDataResult<CreditCard> GetById(int id)
         {
             return new SuccessDataResult<CreditCard>(_creditCardDal.Get(x => x.CreditCardId == id));
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactinalOperation(CreditCard creditCard)
+        {
+            _creditCardDal.Add(creditCard);
+            _creditCardDal.Update(creditCard);
+            return new SuccessResult();
         }
 
         [SecuredOperation("admin,customer")]
