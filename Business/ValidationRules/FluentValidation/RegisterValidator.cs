@@ -7,10 +7,10 @@ using System.Text;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class UserForRegisterDtoValidator : AbstractValidator<UserForRegisterDto>
+    public class RegisterValidator : AbstractValidator<UserForRegisterDto>
     {        
 
-        public UserForRegisterDtoValidator()
+        public RegisterValidator()
         {
             RuleFor(x => x.FirstName).NotEmpty().WithMessage(Messages.FirstNameCanNotBeEmpty);
             RuleFor(x => x.LastName).NotEmpty().WithMessage(Messages.LastNameCanNotBeEmpty);

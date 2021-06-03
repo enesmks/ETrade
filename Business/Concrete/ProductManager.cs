@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -17,6 +20,8 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
+        [SecuredOperation("admin,customer")]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(CheckNumberOfProduct(product.ProductId),CheckIfProductCountOfCategoryCorrect(product.CategoryId));
@@ -29,6 +34,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Added);
         }
 
+        [SecuredOperation("admin,customer")]
         public IResult Delete(Product product)
         {
             IResult result = BusinessRules.Run(DeletebleNonExistingOrder());
@@ -50,6 +56,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Product>(_productDal.Get(x => x.ProductId == id));
         }
 
+        [SecuredOperation("admin,customer")]
         public IResult Update(Product product)
         {
             IResult result = BusinessRules.Run(UpdatebleNonExistingProduct());

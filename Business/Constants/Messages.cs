@@ -65,5 +65,11 @@ namespace Business.Constants
         public static string PasswordMustContainLowercase = "Şifre küçük harf içermelidir";
         public static string PasswordMustContainNumber = "Şifre rakam içermelidir";
         public static string NeedValidEmailAddress="Geçerli bir eposta adresi giriniz";
+        internal static string CardNumberCanNotBeEmpty;
+        internal static string CvvCanNotBeEmpty;
+        internal static string ExpMonthCanNotBeEmpty;
+        internal static string ExpYearCanNotBeEmpty;
+        internal static string ErrorOfCardNumberLength;
+        internal static string ErrorOfCvvLength;
     }
 }

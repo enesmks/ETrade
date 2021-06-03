@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -16,12 +19,15 @@ namespace Business.Concrete
             _shipperDal = shipperDal;
         }
 
+        [ValidationAspect(typeof(ShipperValidator))]
+        [SecuredOperation("admin,customer")]
         public IResult Add(Shipper shipper)
         {
             _shipperDal.Add(shipper);
             return new ErrorResult(Messages.Added);
         }
 
+        [SecuredOperation("admin,customer")]
         public IResult Delete(Shipper shipper)
         {
             _shipperDal.Delete(shipper);
@@ -37,7 +43,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Shipper>(_shipperDal.Get(x => x.ShipperId == id));
         }
-
+        [SecuredOperation("admin,customer")]
         public IResult Update(Shipper shipper)
         {
             _shipperDal.Update(shipper);

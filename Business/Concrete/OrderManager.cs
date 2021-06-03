@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -20,6 +23,8 @@ namespace Business.Concrete
             _orderDal = orderDal;
         }
 
+        [ValidationAspect(typeof(OrderValidator))]
+        [SecuredOperation("admin,customer")]
         public IResult Add(Order order)
         {
             IResult result = BusinessRules.Run(MaxOrderLimit(order.OrderId));
@@ -31,6 +36,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Added);
         }
 
+        [SecuredOperation("admin,customer")]
         public IResult Delete(Order order)
         {
             IResult result = BusinessRules.Run(DeletebleNonExistingOrder());
@@ -52,6 +58,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Order>(_orderDal.Get(x => x.OrderId == id));
         }
 
+        [SecuredOperation("admin,customer")]
         public IResult Update(Order order)
         {
             IResult result = BusinessRules.Run(UpdatebleNonExistingOrder());
