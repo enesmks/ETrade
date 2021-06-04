@@ -11,28 +11,13 @@ namespace WepAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthControler : ControllerBase
+    public class AuthController : ControllerBase
     {
         IAuthService _authService;
 
-        public AuthControler(IAuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-        }
-        [HttpPost("login")]
-        public IActionResult Login(UserForLoginDto userForLoginDto)
-        {
-            var userToLogin = _authService.Login(userForLoginDto);
-            if (!userToLogin.Success)
-            {
-                return BadRequest(userToLogin.Message);
-            }
-            var result = _authService.CreateAccessToken(userToLogin.Data);
-            if (!result.Success)
-            {
-                return BadRequest(result.Message);
-            }
-            return Ok(result);
         }
         [HttpPost("register")]
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
@@ -44,11 +29,28 @@ namespace WepAPI.Controllers
             }
             var registerResult = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
             var result = _authService.CreateAccessToken(registerResult.Data);
-            if (!result.Success)
+            if (result.Success)
             {
-                return BadRequest(result.Message);
+                return Ok(result.Data);
             }
-            return Ok(result);
+            return BadRequest(result.Message);
+            
+        }
+        [HttpPost("login")]
+        public IActionResult Login(UserForLoginDto userForLoginDto)
+        {
+            var userToLogin = _authService.Login(userForLoginDto);
+            if (!userToLogin.Success)
+            {
+                return BadRequest(userToLogin.Message);
+            }
+
+            var result = _authService.CreateAccessToken(userToLogin.Data);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
         }
     }
 }

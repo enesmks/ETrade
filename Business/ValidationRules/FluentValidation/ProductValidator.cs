@@ -16,7 +16,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(x => x.ProductName).MaximumLength(50).WithMessage(Messages.ErrorOfProductNameLength);
             RuleFor(x => x.ProductName).MinimumLength(2).WithMessage(Messages.ErrorOfProductNameLength);
 
-            RuleFor(x => x.UnitPrice).LessThanOrEqualTo(0).WithMessage(Messages.WrongUnitPrice);
+            RuleFor(x => x.UnitPrice).GreaterThanOrEqualTo(0).WithMessage(Messages.WrongUnitPrice);
         }
     }
 }
