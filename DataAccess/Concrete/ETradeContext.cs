@@ -26,5 +26,6 @@ namespace DataAccess.Concrete
         public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
     }
 }

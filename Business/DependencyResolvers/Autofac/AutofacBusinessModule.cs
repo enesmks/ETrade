@@ -47,6 +47,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ImageManager>().As<IImageService>().SingleInstance();
             builder.RegisterType<EfImageDal>().As<IImageDal>().SingleInstance();
 
+            builder.RegisterType<SubCategoryManager>().As<ISubCategoryService>().SingleInstance();
+            builder.RegisterType<EfSubCategoryDal>().As<ISubCategoryDal>().SingleInstance();
+
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 

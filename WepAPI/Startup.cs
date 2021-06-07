@@ -3,6 +3,8 @@ using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
+using DataAccess.Abstract;
+using DataAccess.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +34,7 @@ namespace WepAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers();            
 
             services.AddCors();
 
@@ -54,7 +56,7 @@ namespace WepAPI
             services.AddDependencyResolvers(new ICoreModule[]
             {
                 new CoreModule()
-            });
+            });            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

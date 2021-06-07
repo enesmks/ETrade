@@ -72,5 +72,6 @@ namespace Business.Constants
         public static string ErrorOfCardNumberLength="Hatalı kart numarası !!!";
         public static string ErrorOfCvvLength="Hatalı CVV !!!";
         public static string ImageLimitExceeded="5 den fazla fotoğraf eklyemezsiniz";
+        public static string SubCategoryCanNotBeEmpty="Alt kategori boş bırakılamaz";
     }
 }

@@ -7,7 +7,8 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface ICategoryService : ICrudService<Category>
+    public interface ISubCategoryService : ICrudService<SubCategory>
     {
+        IDataResult<List<SubCategory>> GetAllByCategoryId(int id);
     }
 }
