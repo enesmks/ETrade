@@ -9,34 +9,29 @@ namespace DataAccess.Concrete
 {
     public class EfProductDal : EfEntityRepositoryBase<Product, ETradeContext>, IProductDal
     {
-        public List<ProductDto> GetproductDetails()
+        public List<ProductDetailDto> GetProductDetailDto()
         {
             using (var context = new ETradeContext())
             {
                 var result = from product in context.Products
                              join category in context.Categories
                              on product.CategoryId equals category.CategoryId
-                             join supplier in context.Suppliers
-                             on product.SupplierId equals supplier.SupplierId
-                             select new ProductDto
+                             join image in context.Images
+                             on product.ProductId equals image.ImageId
+                             select new ProductDetailDto
                              {
-                                 Address = supplier.Address,
-                                 CategoryId = category.CategoryId,
                                  CategoryName = category.CategoryName,
-                                 City = supplier.City,
-                                 CompanyName = supplier.CompanyName,
-                                 Country = supplier.Country,
-                                 Fax = supplier.Fax,
-                                 Phone = supplier.Phone,
                                  ProductId = product.ProductId,
                                  ProductName = product.ProductName,
                                  QuantityPerUnit = product.QuantityPerUnit,
-                                 SupplierId = supplier.SupplierId,
                                  UnitPrice = product.UnitPrice,
-                                 UnitsInStock = product.UnitsInStock
+                                 UnitsInStock = product.UnitsInStock,
+                                 Date=image.Date,
+                                 ImagePath=image.ImagePath
                              };
+
                 return result.ToList();
-                             
+
             }
         }
     }

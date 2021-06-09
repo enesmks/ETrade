@@ -19,7 +19,7 @@ namespace WepAPI.Controllers
         {
             _supplierService = supplierService;
         }
-
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var result = _supplierService.GetAll();

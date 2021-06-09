@@ -25,7 +25,7 @@ namespace Business.Concrete
 
         public IResult Add(IFormFile file, Image ımage)
         {
-            IResult result = BusinessRules.Run(CheckIfImageNull(ımage.ProductId),CheckProductImageLimit(ımage.ProductId));
+            IResult result = BusinessRules.Run(CheckIfImageNull(ımage.ProductId));
             if (result != null)
             {
                 return result;
@@ -114,15 +114,6 @@ namespace Business.Concrete
             catch (Exception e)
             {
                 return new ErrorResult(e.Message);
-            }
-            return new SuccessResult();
-        }
-        private IResult CheckProductImageLimit(int prodcutId)
-        {
-            var result = _imageDal.GetAll(x => x.ProductId == prodcutId);
-            if (result.Count>=5)
-            {
-                return new ErrorResult(Messages.ImageLimitExceeded);
             }
             return new SuccessResult();
         }
